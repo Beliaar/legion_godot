@@ -15,5 +15,5 @@
     unused_qualifications
 )]
 
-mod components;
-mod systems;
+pub mod components;
+pub mod systems;
