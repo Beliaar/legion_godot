@@ -3,7 +3,8 @@ use legion::systems::CommandBuffer;
 use legion::{component, system, Entity};
 
 use crate::components::nodes::{
-    NodeComponent2D, NodeComponentSpatial, NodeTemplate, NodeTransform2D, NodeTransform3D, NodeType,
+    NodeComponent2D, NodeComponentSpatial, NodeTemplate, NodeType, Position2D, Position3D,
+    Rotation2D, Rotation3D, Scale2D, Scale3D, ZIndex,
 };
 
 #[derive(Debug, Clone, PartialEq)]
@@ -97,40 +98,71 @@ where
 }
 
 #[system(for_each)]
-pub fn update_transform_2d(node_compenent: &NodeComponent2D, node_transform: &NodeTransform2D) {
-    match node_compenent.get_node() {
+pub fn update_position_2d(node_component: &NodeComponent2D, position: &Position2D) {
+    match node_component.get_node() {
         Some(node) => {
-            node.set_position(Vector2::new(node_transform.x_pos, node_transform.y_pos));
-            node.set_z_index(node_transform.z_index);
-            node.set_z_as_relative(node_transform.z_index_relative);
-            node.set_rotation(node_transform.rotation_degrees);
+            node.set_position(Vector2::new(position.x, position.y));
         }
         None => godot_error!("update_position_2d: Could not acquire node"),
     };
 }
 
 #[system(for_each)]
-pub fn update_transform_3d(
-    node_compenent: &NodeComponentSpatial,
-    node_transform: &NodeTransform3D,
-) {
+pub fn update_z_index(node_component: &NodeComponent2D, z_index: &ZIndex) {
+    match node_component.get_node() {
+        Some(node) => {
+            node.set_z_index(z_index.value);
+            node.set_z_as_relative(z_index.is_relative);
+        }
+        None => godot_error!("update_position_2d: Could not acquire node"),
+    };
+}
+
+#[system(for_each)]
+pub fn update_scale_2d(node_component: &NodeComponent2D, scale: &Scale2D) {
+    match node_component.get_node() {
+        Some(node) => {
+            node.set_scale(Vector2::new(scale.x, scale.y));
+        }
+        None => godot_error!("update_scale_2d: Could not acquire node"),
+    };
+}
+
+#[system(for_each)]
+pub fn update_rotation_2d(node_compenent: &NodeComponent2D, rotation: &Rotation2D) {
     match node_compenent.get_node() {
         Some(node) => {
-            node.set_translation(Vector3::new(
-                node_transform.x_pos,
-                node_transform.y_pos,
-                node_transform.z_pos,
-            ));
-            node.set_scale(Vector3::new(
-                node_transform.x_scale,
-                node_transform.y_scale,
-                node_transform.z_scale,
-            ));
-            node.set_rotation(Vector3::new(
-                node_transform.x_rotation_degrees,
-                node_transform.y_rotation_degrees,
-                node_transform.z_rotation_degrees,
-            ));
+            node.set_rotation(rotation.0);
+        }
+        None => godot_error!("update_position_2d: Could not acquire node"),
+    };
+}
+
+#[system(for_each)]
+pub fn update_position_3d(node_compenent: &NodeComponentSpatial, position: &Position3D) {
+    match node_compenent.get_node() {
+        Some(node) => {
+            node.set_translation(Vector3::new(position.x, position.y, position.z));
+        }
+        None => godot_error!("update_position_3d: Could not acquire node"),
+    };
+}
+
+#[system(for_each)]
+pub fn update_scale_3d(node_compenent: &NodeComponentSpatial, scale: &Scale3D) {
+    match node_compenent.get_node() {
+        Some(node) => {
+            node.set_scale(Vector3::new(scale.x, scale.y, scale.z));
+        }
+        None => godot_error!("update_position_3d: Could not acquire node"),
+    };
+}
+
+#[system(for_each)]
+pub fn update_rotation_3d(node_compenent: &NodeComponentSpatial, rotation: &Rotation3D) {
+    match node_compenent.get_node() {
+        Some(node) => {
+            node.set_rotation(Vector3::new(rotation.x, rotation.y, rotation.z));
         }
         None => godot_error!("update_position_3d: Could not acquire node"),
     };

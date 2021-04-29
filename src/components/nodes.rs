@@ -1,58 +1,62 @@
 use gdnative::prelude::*;
 use gdnative::{Ref, TRef};
 
-#[derive(Copy, Clone, Debug)]
-pub struct NodeTransform2D {
-    pub x_pos: f32,
-    pub y_pos: f32,
-    pub z_index: i64,
-    pub z_index_relative: bool,
-    pub x_scale: f32,
-    pub y_scale: f32,
-    pub rotation_degrees: f64,
+#[derive(Copy, Clone, Debug, Default)]
+pub struct Position2D {
+    pub x: f32,
+    pub y: f32,
 }
 
-impl Default for NodeTransform2D {
+#[derive(Copy, Clone, Debug, Default)]
+pub struct ZIndex {
+    pub value: i64,
+    pub is_relative: bool,
+}
+
+#[derive(Copy, Clone, Debug)]
+pub struct Scale2D {
+    pub x: f32,
+    pub y: f32,
+}
+
+impl Default for Scale2D {
     fn default() -> Self {
-        NodeTransform2D {
-            y_pos: 0.0,
-            x_pos: 0.0,
-            z_index: 0,
-            z_index_relative: false,
-            x_scale: 1.0,
-            y_scale: 1.0,
-            rotation_degrees: 0.0,
+        Scale2D { x: 1.0, y: 1.0 }
+    }
+}
+
+#[derive(Copy, Clone, Debug, Default)]
+pub struct Rotation2D(pub f64);
+
+#[derive(Copy, Clone, Debug, Default)]
+pub struct Position3D {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+}
+
+#[derive(Copy, Clone, Debug)]
+pub struct Scale3D {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
+}
+
+impl Default for Scale3D {
+    fn default() -> Self {
+        Self {
+            x: 1.0,
+            y: 1.0,
+            z: 1.0,
         }
     }
 }
 
-#[derive(Copy, Clone, Debug)]
-pub struct NodeTransform3D {
-    pub x_pos: f32,
-    pub y_pos: f32,
-    pub z_pos: f32,
-    pub x_scale: f32,
-    pub y_scale: f32,
-    pub z_scale: f32,
-    pub x_rotation_degrees: f32,
-    pub y_rotation_degrees: f32,
-    pub z_rotation_degrees: f32,
-}
-
-impl Default for NodeTransform3D {
-    fn default() -> Self {
-        NodeTransform3D {
-            x_pos: 0.0,
-            y_pos: 0.0,
-            z_pos: 0.0,
-            x_scale: 1.0,
-            y_scale: 1.0,
-            z_scale: 1.0,
-            x_rotation_degrees: 0.0,
-            y_rotation_degrees: 0.0,
-            z_rotation_degrees: 0.0,
-        }
-    }
+#[derive(Copy, Clone, Debug, Default)]
+pub struct Rotation3D {
+    pub x: f32,
+    pub y: f32,
+    pub z: f32,
 }
 
 #[derive(Clone, Copy, Debug, PartialEq)]
